@@ -75,6 +75,9 @@ class ImagePyramid{
   cv::Point2f centers_[n_levels]; /**<Array, containing the image center coordinates (in pixel), defined in an
                                       image centered coordinate system of the image at level 0.*/
 
+   
+
+
   /** \brief Initializes the image pyramid from an input image (level 0).
    *
    *   @param img   - Input image (level 0).
@@ -146,12 +149,19 @@ class ImagePyramid{
         imgs_[l].convertTo(histEqualizedLevelImg, CV_8UC1); //smk: needed as original input image is saved as float now, which is not accepted by FAST detector
     //CUSTOMIZATION
 
+    //RYB STUFF:
+    //RYB: mask used to limit the searchable area for feature descriptors in the image. 
+    cv::Mat circle_mask = cv::Mat::zeros(histEqualizedLevelImg.size(), CV_8U);
+    int img_cols = histEqualizedLevelImg.cols;
+    int img_rows = histEqualizedLevelImg.rows;
+    cv::circle(circle_mask, cv::Point(img_cols/2,img_rows/2),(img_rows/4)-3, cv::Scalar(255),CV_FILLED, 8,0);
+
 #if (CV_MAJOR_VERSION < 3)
     cv::FastFeatureDetector feature_detector_fast(detectionThreshold, true);
-    feature_detector_fast.detect(histEqualizedLevelImg, keypoints); //CUSTOMIZATION
+    feature_detector_fast.detect(histEqualizedLevelImg, keypoints, circle_mask); //CUSTOMIZATION
 #else
     auto feature_detector_fast = cv::FastFeatureDetector::create(detectionThreshold, true);
-    feature_detector_fast->detect(histEqualizedLevelImg, keypoints); //CUSTOMIZATION
+    feature_detector_fast->detect(histEqualizedLevelImg, keypoints, circle_mask); //CUSTOMIZATION
 #endif
 
     candidates.reserve(candidates.size()+keypoints.size());
@@ -188,6 +198,13 @@ class ImagePyramid{
 
         //Create histogram
         cv::Mat histogram;
+        //RYB:-------
+        //cv::Mat circle_mask = cv::Mat::zeros(inImg.size(), CV_8U);
+        //int img_cols = inImg.cols;
+        //int img_rows = inImg.rows;
+        //cv::circle(circle_mask, cv::Point(img_cols/2,img_rows/2),(img_rows/4), cv::Scalar(255),CV_FILLED, 8,0);
+        //cv::calcHist(&inImg, 1, 0, circle_mask, histogram, 1, &histSize, &histRange, true, false);
+        //--------
         cv::calcHist(&inImg, 1, 0, cv::noArray(), histogram, 1, &histSize, &histRange, true, false);
 
         //Find clipping range w.r.t minimmum and maximum intensity values (CDF) with atleast N=10000 pixels in bin

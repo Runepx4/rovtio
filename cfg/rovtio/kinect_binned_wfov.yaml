@@ -1,0 +1,13 @@
+image_width: 512
+image_height: 512
+camera_name: ir/image_raw
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [249.081218366, 0.0, 255.199610609, 0.0, 249.090551292, 257.787380492, 0.0, 0.0, 1.0]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.267719786172, 0.0523092772368, 0.000631946717777, 0.000562337955312, 0.0]
+
