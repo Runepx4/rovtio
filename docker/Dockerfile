@@ -12,7 +12,7 @@ RUN apt-get update && \
 RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
 RUN mkdir -p /catkin_ws/src/ && cd /catkin_ws/src/ && \
-    git clone https://github.com/ntnu-arl/rovtio && \
+    git clone https://github.com/Runepx4/rovtio.git -b circle_mask && \
     git clone https://github.com/ethz-asl/kindr && \
     cd /catkin_ws/src/rovtio/ && git submodule update --init --recursive && ls && \
     cd /catkin_ws/ && catkin config --extend /opt/ros/melodic
