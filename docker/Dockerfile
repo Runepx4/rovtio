@@ -7,7 +7,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git python-catkin-tools build-essential 
+    git python-catkin-tools build-essential \
+    freeglut3-dev libglew-dev
 
 RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
@@ -19,7 +20,7 @@ RUN mkdir -p /catkin_ws/src/ && cd /catkin_ws/src/ && \
 
 RUN cd /catkin_ws/ && . /opt/ros/melodic/setup.sh && \
     rosdep install --from-paths src --ignore-src -r -y && \
-    catkin build rovtio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=OFF -DROVIO_NCAM=1 -DROVIO_NMAXFEATURE=25
+    catkin build rovtio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON -DROVIO_NCAM=1 -DROVIO_NMAXFEATURE=25
     
 COPY ./cfg/rovtio /catkin_ws/src/rovtio/cfg/rovtio
 COPY ./launch /catkin_ws/src/rovtio/launch

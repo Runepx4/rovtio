@@ -41,7 +41,7 @@
 #include "rovtio/RovioFilter.hpp"
 #include "rovtio/RovioNode.hpp"
 #ifdef MAKE_SCENE
-#include "rovio/RovioScene.hpp"
+#include "rovtio/RovioScene.hpp"
 #endif
 
 #ifdef ROVIO_NMAXFEATURE
